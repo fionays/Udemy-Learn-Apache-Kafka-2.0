@@ -1,14 +1,15 @@
 package com.github.fiona.kafka.tutorial1;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
 
 public class ProducerDemo {
     public static void main(String[] args) {
+        Logger logger = LoggerFactory.getLogger(ProducerDemo.class);
         final String bootstrapServer = "localhost:9092";
         // create Producer properties
         Properties props = new Properties();
@@ -24,11 +25,27 @@ public class ProducerDemo {
         KafkaProducer <String, String> producer = new KafkaProducer<>(props);
 
         // create record
-        ProducerRecord<String, String> record = new ProducerRecord<>("first_topic", "Hello Kafka!");
+        for (int i = 0; i < 9; i++) {
+            ProducerRecord<String, String> record = new ProducerRecord<>("first_topic", "Hello Kafka!" +
+                    i);
 
-        // send data - async
-        producer.send(record);
-
+            // send data - async
+            producer.send(record, new Callback() {
+                @Override
+                public void onCompletion(RecordMetadata recordMetadata, Exception e) {
+                    // Execute every time a record is successfully sent or an exception is thrown
+                    if (e == null) {
+                        logger.info("Received new Metadata. \n" +
+                                "Topic: " + recordMetadata.topic() + "\n" +
+                                "Partition: " + recordMetadata.partition() + "\n" +
+                                "Offset: " + recordMetadata.offset() + "\n" +
+                                "Timestamp: " + recordMetadata.timestamp() + "\n");
+                    } else {
+                        logger.error("Error while producing", e);
+                    }
+                }
+            });
+        }
         // producer.flush();
 
         // flush & close
