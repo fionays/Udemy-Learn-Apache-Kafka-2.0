@@ -27,7 +27,7 @@ public class ProducerDemo {
         // create record
         for (int i = 0; i < 9; i++) {
             String topic = "first_topic";
-            String value = "today is 4/14 " + i;
+            String value = "today is 4/15 " + i;
             String key = "id_" + i; // same key goes to the same partition
 
             ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
