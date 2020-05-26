@@ -25,10 +25,13 @@ import java.util.concurrent.TimeUnit;
 
 public class TwitterProducer {
     Logger logger = LoggerFactory.getLogger(TwitterProducer.class.getName());
-    private String consumerKey = "key";
-    private String consumerSecret = "cSecret";
-    private String token = "token";
-    private String secret = "secret";
+
+    private String consumerKey="key";
+    private String consumerSecret="cSecret";
+    private String token="token";
+    private String secret="secret";
+
+
     private String topic = "twitter_tweets";
     private int partition = 6;
     List<String> terms = Lists.newArrayList("kafka", "fun", "learning");
@@ -116,6 +119,13 @@ public class TwitterProducer {
         props.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         props.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+
+        // Create safe Producer
+        props.setProperty(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true");
+        // The following are not needed to set but it is always good to set them explicitly
+        props.setProperty(ProducerConfig.ACKS_CONFIG, "all");
+        props.setProperty(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
+        props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
 
         KafkaProducer producer = new KafkaProducer(props);
         return producer;
