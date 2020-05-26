@@ -127,6 +127,11 @@ public class TwitterProducer {
         props.setProperty(ProducerConfig.RETRIES_CONFIG, Integer.toString(Integer.MAX_VALUE));
         props.setProperty(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, "5");
 
+        // high throughput producer (at the expense of a bit of lag and CPU usage)
+        props.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+        props.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20");
+        props.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(32*1024)); // 32KB batch size
+
         KafkaProducer producer = new KafkaProducer(props);
         return producer;
     }
