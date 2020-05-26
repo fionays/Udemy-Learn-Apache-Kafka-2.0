@@ -1,7 +1,6 @@
-package com.github.fiona.kafka.realWorldApp;
+package kafka.realWorldApp;
 
 import com.google.common.collect.Lists;
-import com.sun.jdi.BooleanType;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
 import com.twitter.hbc.core.Constants;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 

@@ -1,6 +1,8 @@
-package com.github.fiona.kafka.tutorial1;
+package kafka.tutorial1;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.CountDownLatch;
 
 /*
